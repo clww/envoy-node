@@ -1,5 +1,5 @@
 import { HttpHeader } from "./types";
-import { Metadata } from "grpc";
+import { Metadata } from "@grpc/grpc-js";
 import { isNumber } from "util";
 
 const ENVOY_DEFAULT_EGRESS_PORT = 12345;

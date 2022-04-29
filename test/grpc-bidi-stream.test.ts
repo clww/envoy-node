@@ -1,6 +1,6 @@
-import * as grpc from "grpc";
+import * as grpc from "@grpc/grpc-js";
 // tslint:disable-next-line:no-duplicate-imports
-import { ServerUnaryCall, sendUnaryData, ServiceError, ServerDuplexStream } from "grpc";
+import { ServerUnaryCall, ServiceError, ServerDuplexStream } from "@grpc/grpc-js";
 
 import GrpcTestServer, { Ping, PingEnvoyClient } from "./lib/grpc-test-server";
 import { sleep } from "./lib/utils";
@@ -19,7 +19,7 @@ describe("GRPC bidi stream Test", () => {
         super(30);
       }
 
-      async wrapper(call: ServerUnaryCall<any>): Promise<any> {
+      async wrapper(call: ServerUnaryCall<any, any>): Promise<any> {
         const innerClient = new PingEnvoyClient(
           `${GrpcTestServer.domainName}:${this.envoyIngressPort}`,
           new EnvoyContext(call.metadata)
@@ -29,7 +29,7 @@ describe("GRPC bidi stream Test", () => {
         requestId = ctx.requestId;
         traceId = ctx.traceId;
         innerParentId = ctx.spanId;
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           const stream = innerClient.bidiStream();
           stream.write({ message: call.request.message });
           stream.on("error", (error) => {

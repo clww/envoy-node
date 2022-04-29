@@ -4,7 +4,7 @@ import EnvoyContext, {
   assignHeader,
   refineManagedHostArray
 } from "../src/envoy-context";
-import { Metadata } from "grpc";
+import { Metadata } from "@grpc/grpc-js";
 import { HttpHeader } from "../src/types";
 
 describe("Envoy context test", () => {

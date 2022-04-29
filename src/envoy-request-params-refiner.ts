@@ -1,4 +1,4 @@
-import { Metadata } from "grpc";
+import { Metadata } from "@grpc/grpc-js";
 import { parse as parseUrl } from "url";
 import { HttpHeader } from "./types";
 import EnvoyContext from "./envoy-context";
@@ -41,6 +41,8 @@ export default function envoyRequestParamsRefiner(
   const refinedParamsWithUri = refinedParams as OptionsWithUri;
   if (Object.prototype.hasOwnProperty.call(refinedParams, "url")) {
     refinedParamsWithUri.uri = refinedParamsWithUrl.url;
+    // FIXME fix types in this method
+    // @ts-ignore
     delete refinedParamsWithUrl.url;
   }
 
@@ -73,9 +75,8 @@ export default function envoyRequestParamsRefiner(
   };
 
   if (!callDirectly) {
-    refinedParamsWithUri.uri = `http://${envoyParams.context.envoyEgressAddr}:${
-      envoyParams.context.envoyEgressPort
-    }${path}`;
+    refinedParamsWithUri.uri = `http://${envoyParams.context.envoyEgressAddr}:${envoyParams.context.envoyEgressPort
+      }${path}`;
   }
 
   return refinedParams;

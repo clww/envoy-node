@@ -1,4 +1,4 @@
-import { Metadata } from "grpc";
+import { Metadata } from "@grpc/grpc-js";
 
 import EnvoyRequestParams, {
   X_ENVOY_MAX_RETRIES,

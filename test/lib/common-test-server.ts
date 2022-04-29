@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as util from "util";
+import fetch from "node-fetch";
 import { spawn, ChildProcess } from "child_process";
 import ZipkinMock from "./zipkin-mock";
 import { sleep } from "./utils";
@@ -78,7 +79,25 @@ export default abstract class CommonTestServer {
       }
     });
     // wait for envoy to be up
-    await sleep(100);
+    await this.pollEnvoyRunningStatus();
+  }
+
+  async pollEnvoyRunningStatus() {
+    const MAX_RETRY = 20;
+    const INTERVAL = 100;
+    let i = 0;
+
+    while (i < MAX_RETRY) {
+      try {
+        await fetch(`http://localhost:${this.envoyEgressPort}`);
+        return;
+      } catch (e) {
+        i++;
+      }
+      await sleep(INTERVAL);
+    }
+
+    throw new Error("Failed to start envoy server");
   }
 
   async stop() {

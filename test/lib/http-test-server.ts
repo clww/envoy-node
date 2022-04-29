@@ -24,8 +24,8 @@ export default abstract class HttpTestServer extends CommonTestServer {
     this.server = http.createServer(this.processRequest);
   }
 
-  abstract async wrapper(request: Request): Promise<any>;
-  abstract async inner(request: Request): Promise<any>;
+  abstract wrapper(request: Request): Promise<any>;
+  abstract inner(request: Request): Promise<any>;
 
   private callAsync(
     request: Request,

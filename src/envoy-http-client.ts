@@ -1,4 +1,4 @@
-import { Metadata } from "grpc";
+import { Metadata } from "@grpc/grpc-js";
 import { HttpHeader } from "./types";
 import EnvoyHttpRequestParams, { EnvoyHttpRequestInit } from "./envoy-http-request-params";
 import EnvoyContext from "./envoy-context";
