@@ -206,12 +206,12 @@ describe("HTTP Test", () => {
           errorHappened = true;
           expect(e.$statusCode).toBe(504);
           expect(e.message).toBe("upstream request timeout");
+
+          throw e;
+        } finally {
+          expect(errorHappened).toBeTruthy();
+          expect(innerCalledCount).toBe(2);
         }
-
-        expect(errorHappened).toBeTruthy();
-        expect(innerCalledCount).toBe(2);
-
-        return;
       }
 
       async inner(request: Request): Promise<any> {
@@ -236,6 +236,8 @@ describe("HTTP Test", () => {
         { message: "ping" },
         { "x-client-trace-id": CLIENT_TRACE_ID }
       );
+    } catch (e) {
+      expect(e).not.toBeFalsy();
     } finally {
       await server.stop();
     }
